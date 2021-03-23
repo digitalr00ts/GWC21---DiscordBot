@@ -75,6 +75,16 @@ async def speak(ctx):
   await ctx.send(":robot: Beep boop. Boop beep.")
 ```
 
+### Wait, what is this `ctx`?
+
+`bot.command()` is making our funcion a "callback". It is how our function can hook into the coroutine. `ctx` provides this ability. In `discord.py` it stands for the `Context`.
+
+The `Context` contains:
+
+> Essentially all the information you need to know how the command was executed.
+
+-- https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#invocation-context
+
 ## Other References
 
 Learn how to create a Discord Bot:
