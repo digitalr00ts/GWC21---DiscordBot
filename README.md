@@ -21,7 +21,7 @@ This was done ahead of time:
 
 (If you are curious about the specifics, see the reference links at the bottom.)
 
-## Programing the Bot
+## Prep for Programing the Bot
 
 ### discord.py
 A 3rd party library that implements the Discord API in Python and adds helpers for bot creation. (Yay, open source tools making things easier for us!)
