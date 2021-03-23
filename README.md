@@ -43,9 +43,9 @@ from discord.ext.commands import Bot
 bot = Bot("!")
 ```
 
-## Computer Sciency Stuff
+### Computer Sciency Stuff
 
-### Coroutine
+#### Coroutines
 
 As far as we are concerned, it will act like an infinate loop, so we can interact with the bot.
 
@@ -63,7 +63,7 @@ As far as we are concerned, it will act like an infinate loop, so we can interac
 bot.run(<API TOKEN>)
 ```
 
-### Python Decorators
+#### Python Decorators
 
 TL;DR: A wrapper to put our function inside of another function. This helps to simplify the code we have to write.
 
@@ -75,7 +75,7 @@ async def speak(ctx):
   await ctx.send(":robot: Beep boop. Boop beep.")
 ```
 
-### Wait, what is this `ctx`?
+#### Wait, what is this `ctx`?
 
 `bot.command()` is making our funcion a "callback". It is how our function can hook into the coroutine. `ctx` provides this ability. In `discord.py` it stands for the `Context`.
 
@@ -84,6 +84,40 @@ The `Context` contains:
 > Essentially all the information you need to know how the command was executed.
 
 -- https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#invocation-context
+
+### The other files with the code
+
+#### .env
+
+`.env` lets us define environment variables. Replit loads this file automaticly for us. This is a good way to keep secrets, like API tokens, out of our code.
+
+
+```text
+# .env
+API_USERNAME=my_cool_handle
+```
+
+```py
+# main.py
+import os
+print(os.environ["API_USERNAME"])
+```
+
+Replit's docs, https://docs.replit.com/repls/secret-keys.
+
+#### project.toml
+
+An implementation detail we can ignore for today.
+
+TL;DR: It can contain metadata about our code. And it can hold configurations for tools that help manage our code.
+
+#### Poetry
+
+An implementation detail we can ignore for today.
+
+[Poetry](https://python-poetry.org/) turns our code into an installable package and manages any needed dependencies.
+
+Poetry is gaining popularity, but is not the traditional tool used for this; it  is what Replit has chosen to use.
 
 ## Other References
 
