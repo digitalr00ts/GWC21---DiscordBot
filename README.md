@@ -15,7 +15,7 @@ This was done ahead of time:
 1. Create bot in Discord's Developer Portal, https://discord.com/developers.
 ![Build-A-Bot](https://files.realpython.com/media/discord-bot-add-bot.4735c88ff16b.png)
 1. A secret token will be provide for us to use in our code. This is how the bot knows we are allowed to talk to it.
-1. We need to set what permissions we want the bot to have.
+1. We need to set what permissions we want the bot to have (but not Admin permissions!).
 ![](https://files.realpython.com/media/discord-bot-scopes.ee333b7a5987.png)
 1. We need to add our bot to our guild.
 
