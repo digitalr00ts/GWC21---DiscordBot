@@ -6,7 +6,7 @@ from utils import logger
 import requests
 from discord.ext.commands import Bot
 
-bot = Bot("$")
+bot = Bot(command_prefix="$", description="SMHS GWC 2021")
 
 
 # Debug info so we know when our bot is ready to party.
@@ -24,7 +24,7 @@ async def speak(ctx):
 
 # Example 1
 @bot.command()
-async def echo(ctx, *args):
+async def echo(ctx, *args: str):
     """Repeat message."""
     # Hint: `args` is a tuple.
     await ctx.send(args)
@@ -37,17 +37,28 @@ async def add(ctx, *args):
     """Add numbers cuz math is hard."""
     # Hint: `args` are strings, they must be converted to integers to be summed.
     # What happens if we pass something that is not representative of a number?
-    await ctx.send(f"{' + '.join(args)} = {sum(map(int, args))}")
+    
+    equation = " + ".join(args)
+    
+    total = 0
+    for num in args:
+        total += int(num)
+
+    await ctx.send(f"{equation} = {total}")
 
 
 # Example 3
 @bot.command()
-async def fizzbuzz(ctx, num):
+async def fizzbuzz(ctx, num: int):
     """Thowback to the FizzBuzz activity."""
-    num = int(num)
-    rtn = f"{'' if num % 3 else 'Fizz'}{'' if num % 5 else 'Buzz'}"
-    await ctx.send(rtn if rtn else num)
+    rtn = ""
 
+    if not num % 3:
+        rtn += "Fizz"
+    if not num % 5:
+        rtn += "Buzz"
+
+    await ctx.send(rtn if rtn else num)
 
 
 # Example 4
@@ -55,8 +66,23 @@ async def fizzbuzz(ctx, num):
 async def inspiration(ctx):
     """Inspirational quotes provided by https://zenquotes.io/."""
     response = requests.get("https://zenquotes.io/api/random")
+    # From the docs, https://zenquotes.io/#docs, the response format is:
+    # [ { "q": "<quote>", "a": "<author>", "h": "<html>" } ]
     data = response.json()[0]
     await ctx.send(f"{data['q']} - {data['a']}")
+
+
+# Valentina 1
+@bot.command()
+async def minion_speak(ctx, text):
+    """banana"""
+    from urllib.parse import quote
+    url_text = quote(text)
+    url = f"https://api.funtranslations.com/translate/minion.json?text={url_text}"
+    response = requests.get(url)
+    data = response.json()
+    translation = data["contents"]["translated"]
+    await ctx.send(translation)
 
 
 # The bot's coroutine
