@@ -21,9 +21,7 @@ This was done ahead of time:
 
 (If you are curious about the specifics, see the reference links at the bottom.)
 
-## Prep for Programing the Bot
-
-### discord.py
+## discord.py
 A 3rd party library that implements the Discord API in Python and adds helpers for bot creation. (Yay, open source tools making things easier for us!)
 
 ```py
@@ -33,23 +31,55 @@ import discord
 * Documentation: https://discordpy.readthedocs.io
 * Source Code: https://github.com/Rapptz/discord.py
 
-### discord.py Bot Helper
+### discord.py Bot
+> The creation of bots ... can be daunting and confusing to get correctly the first time. Many times there comes a repetition in creating a bot command framework that is extensible, flexible, and powerful. For this reason, discord.py comes with an extension library that handles this for you.
 
-`discord.py` has an extention to create bot commands, so we do not have to write the code to talk to the Discord API to do this ourselves.
+-- https://discordpy.readthedocs.io/en/latest/ext/commands/
 
 ```py
 from discord.ext.commands import Bot
 
-bot = Bot("!")
+bot = Bot("$")
+...
+bot.run(os.getenv("API_TOKEN"))
 ```
 
-### Computer Sciency Stuff
+Represents a discord bot.
 
-#### Coroutines
+Documentation:
+  * https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#bots
 
-As far as we are concerned, it will act like an infinate loop, so we can interact with the bot.
+### Bot commands
+
+> Commands are defined by attaching it to a regular Python function.
+A command must always have at least one parameter, `ctx`, which is the Context.
+This parameter gives you access to something called the “invocation context”. Essentially all the information you need to know how the command was executed.
+
+```py
+@bot.command()  # A shortcut decorator that adds the function to the internal command list.
+async def speak(ctx):
+    """Robot says hello."""
+    await ctx.send(":robot: Beep boop. Boop beep.")
+```
+
+Documentation:
+  * [Commands](https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html)
+  * [Commands - Invocation Context](https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#invocation-context)
+  * [Bot - Context](https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context)
+  * [Bot - Command Decorator](
+https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.GroupMixin.command)
+
+## Computer Sciency Stuff
+
+### Coroutines
+
+As far as we are concerned, it will act like an infinite loop, so we can interact with the bot.
 
 ☝️🧐 Remeber that loops are a form of "flow control" in a program? Well, so are coroutines.
+
+```py
+bot.run(os.getenv("API_TOKEN"))
+```
 
 > multitasking, by allowing execution to be suspended and resumed
 
@@ -59,35 +89,52 @@ As far as we are concerned, it will act like an infinate loop, so we can interac
 
 -- https://discordpy.readthedocs.io/en/latest/faq.html#coroutines
 
-```py
-bot.run(<API TOKEN>)
-```
-
-#### Python Decorators
+### Python Decorators
 
 TL;DR: A wrapper to put our function inside of another function. This helps to simplify the code we have to write.
 
 (The big brain term is "closure".)
 
+#### Closure Example
+
 ```py
-@bot.command()
-async def speak(ctx):
-  await ctx.send(":robot: Beep boop. Boop beep.")
+>>> def outer_func(who):
+...     name = who.title()
+...     def inner_func():
+...         return f"Hello, {name}!"
+...     return inner_func()
+...
+
+>>> print(outer_func("world"))
+Hello, World!
 ```
 
-#### Wait, what is this `ctx`?
+#### Decorator Example
 
-`bot.command()` is making our funcion a "callback". It is how our function can hook into the coroutine. `ctx` provides this ability. In `discord.py` it stands for the `Context`.
+```py
+>>> def add_messages(func):
+...     def _add_messages():
+...         print("This is my first decorator")
+...         func()
+...         print("Bye!")
+...     return _add_messages
+...
 
-The `Context` contains:
+>>> @add_messages
+... def greet():
+...     print("Hello, World!")
+...
 
-> Essentially all the information you need to know how the command was executed.
+>>> greet()
+This is my first decorator
+Hello, World!
+Bye!
 
--- https://discordpy.readthedocs.io/en/latest/ext/commands/commands.html#invocation-context
+```
 
-### The other files with the code
+## The other files with the code
 
-#### .env
+### .env
 
 `.env` lets us define environment variables. Replit loads this file automaticly for us. This is a good way to keep secrets, like API tokens, out of our code.
 
@@ -105,23 +152,21 @@ print(os.environ["API_USERNAME"])
 
 Replit's docs, https://docs.replit.com/repls/secret-keys.
 
-#### project.toml
+### project.toml
 
-An implementation detail we can ignore for today.
+_**An implementation detail we can ignore for today.**_
 
 TL;DR: It can contain metadata about our code. And it can hold configurations for tools that help manage our code.
 
-#### Poetry
+### Poetry
 
-An implementation detail we can ignore for today.
+_**An implementation detail we can ignore for today.**_
 
-[Poetry](https://python-poetry.org/) turns our code into an installable package and manages any needed dependencies.
+[Poetry](https://python-poetry.org/) turns our code into an installable package and manages any needed dependencies. (It uses the `pyproject.toml` to store its configuration.)
 
 Poetry is gaining popularity, but is not the traditional tool used for this; it  is what Replit has chosen to use.
 
-## Other References
-
-Learn how to create a Discord Bot:
+## Discord Bot Guides
 
 * https://www.freecodecamp.org/news/create-a-discord-bot-with-python/
 * https://realpython.com/how-to-make-a-discord-bot-python/
