@@ -2,7 +2,7 @@
 import os
 
 from utils import logger
-
+# :D
 import requests
 from discord.ext.commands import Bot
 
@@ -28,7 +28,7 @@ async def echo(ctx, *args: str):
     """Repeat message."""
     # Hint: `args` is a tuple.
     await ctx.send(args)
-    # await ctx.send(" ".join(args))
+    await ctx.send(" ".join(args))
 
 
 # Example 2
@@ -71,6 +71,13 @@ async def inspiration(ctx):
     data = response.json()[0]
     await ctx.send(f"{data['q']} - {data['a']}")
 
+# surprise :D
+@bot.command()
+async def surprise(ctx):
+    """A fantastical surprise."""
+    data = ("https://knowyourmeme.com/memes/surprised-pikachu")
+    await ctx.send(data)
+    
 
 # Valentina 1
 @bot.command()
@@ -84,6 +91,40 @@ async def minion_speak(ctx, text):
     translation = data["contents"]["translated"]
     await ctx.send(translation)
 
+
+# Class Demo
+@bot.command()
+async def secret(ctx):
+    """Tell a secret."""
+    data = "https://genius.com/Rick-astley-never-gonna-give-you-up-lyrics"
+    await ctx.send(data)
+
+import datetime
+@bot.command()
+async def demo2(ctx):
+    """Demo2 command"""
+    # https://docs.python.org/3/library/datetime.html
+    current_time = datetime.datetime.now()
+    # TODO: Convert to London TZ
+    await ctx.send(current_time)
+    #  https://stackoverflow.com/questions/415511/how-to-get-the-current-time-in-python
+  
+
+# Carlos adds easter egg. #teehee
+@bot.listen('on_message')
+async def msg_responses(message):
+    # Ignore messages from bot. Otherwise may get stuck in a loop.
+    if message.author == bot.user:
+        return
+
+    # So actions are case insensitive.
+    msg_content = message.content.casefold()
+
+    if msg_content.startswith("lol") or " lol" in msg_content:
+        await message.channel.send("#teehee")
+
+    if "teehee" in msg_content:
+        await message.add_reaction("\N{Rolling on the Floor Laughing}")
 
 # The bot's coroutine
 bot.run(os.getenv("API_TOKEN"))
